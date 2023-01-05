@@ -1,4 +1,5 @@
 using ExampleApp.Models;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
 
 namespace ExampleApp
@@ -13,9 +14,14 @@ namespace ExampleApp
                 string connectionString = builder.Configuration.GetConnectionString("Database");
                 dbContextOptions.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
             });
+            builder.Services.Configure<ForwardedHeadersOptions>(options =>
+            {
+                options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+            });
             builder.Services.AddControllers();
 
             WebApplication app = builder.Build();
+            app.UseForwardedHeaders();
             app.UseHttpsRedirection();
             app.UseAuthorization();
             app.MapControllers();
