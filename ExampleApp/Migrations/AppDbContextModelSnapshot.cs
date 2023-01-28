@@ -30,6 +30,12 @@ namespace ExampleApp.Migrations
                         .HasColumnType("date")
                         .HasColumnName("birth_date");
 
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)")
+                        .HasColumnName("email");
+
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -42,9 +48,14 @@ namespace ExampleApp.Migrations
                         .HasColumnType("varchar(50)")
                         .HasColumnName("last_name");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_persons");
 
-                    b.ToTable("person", (string)null);
+                    b.HasIndex("Email")
+                        .IsUnique()
+                        .HasDatabaseName("ix_persons_email");
+
+                    b.ToTable("persons");
                 });
 #pragma warning restore 612, 618
         }

@@ -14,13 +14,17 @@ namespace ExampleApp.Models
 
             modelBuilder.Entity<Person>(entity =>
             {
-                entity.ToTable("person");
                 entity.HasKey(x => x.Id);
-                entity.Property(x => x.Id).HasColumnName("id");
-                entity.Property(x => x.FirstName).HasColumnName("first_name").HasMaxLength(50).IsRequired();
-                entity.Property(x => x.LastName).HasColumnName("last_name").HasMaxLength(50).IsRequired();
-                entity.Property(x => x.BirthDate).HasColumnName("birth_date").HasColumnType("date");
+                entity.Property(x => x.Id);
+                entity.Property(x => x.Email).HasMaxLength(50).IsRequired();
+                entity.Property(x => x.FirstName).HasMaxLength(50).IsRequired();
+                entity.Property(x => x.LastName).HasMaxLength(50).IsRequired();
+                entity.Property(x => x.BirthDate).HasColumnType("date");
+
+                entity.HasIndex(x => x.Email).IsUnique();
             });
+
+            modelBuilder.UseSnakeCaseDatabaseNames();
         }
     }
 }

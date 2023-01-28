@@ -14,11 +14,13 @@ namespace ExampleApp.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "person",
+                name: "persons",
                 columns: table => new
                 {
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    email = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
                     first_name = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     last_name = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false)
@@ -27,15 +29,21 @@ namespace ExampleApp.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_person", x => x.id);
+                    table.PrimaryKey("pk_persons", x => x.id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateIndex(
+                name: "ix_persons_email",
+                table: "persons",
+                column: "email",
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "person");
+                name: "persons");
         }
     }
 }
